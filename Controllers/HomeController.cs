@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Pokemon.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Pokemon.Controllers;
 
@@ -8,11 +10,13 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly AppDbContext _context;
+    private readonly HttpClient _httpClient;
 
-    public HomeController(ILogger<HomeController> logger, AppDbContext context)
+    public HomeController(ILogger<HomeController> logger, AppDbContext context, HttpClient httpClient)
     {
         _logger = logger;
         _context = context;
+        _httpClient = httpClient;
     }
 
     public IActionResult Index()
@@ -24,6 +28,42 @@ public class HomeController : Controller
     {
         var trainers = _context.Trainers.ToList();
         return View(trainers);
+    }
+
+    public async Task<IActionResult> Pokedex(string sortBy, string search, int page=1)
+    {
+        var apiUrl = $"https://pokeapi.co/api/v2/pokemon/?offset={(page-1)*20}&limit=20";
+        HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+    
+        if (response.IsSuccessStatusCode)
+        {
+            string data = await response.Content.ReadAsStringAsync();
+
+            var pokemonData = JsonConvert.DeserializeObject<PokemonResponse>(data);
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                pokemonData.Results = pokemonData.Results
+                    .Where(x => x.Name.Contains(search, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            if(sortBy=="nameAscending"){
+                pokemonData.Results = pokemonData.Results.OrderBy(x => x.Name).ToList();
+            }
+            else if(sortBy=="nameDescending")
+            {
+                pokemonData.Results = pokemonData.Results.OrderBy(x => x.Name).Reverse().ToList();
+            }
+            ViewBag.sortBy = sortBy;
+            ViewBag.Page = page;
+
+            return View(pokemonData);
+        }
+        else
+        {
+            return View();
+        }
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -101,5 +141,23 @@ public class HomeController : Controller
         }
 
         return RedirectToAction("Trainers");
+    }
+
+    public async Task<IActionResult> Pokemon(string name)
+    {
+        var apiUrl = $"https://pokeapi.co/api/v2/pokemon/{name}";
+        HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+
+        if (response.IsSuccessStatusCode)
+        {
+            string data = await response.Content.ReadAsStringAsync();
+
+            var pokemonData = JsonConvert.DeserializeObject<SimplePokemon>(data);
+            return View(pokemonData);
+        }
+        else
+        {
+            return View("NotFound");
+        }
     }
 }

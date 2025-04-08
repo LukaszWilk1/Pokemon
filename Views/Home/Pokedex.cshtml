@@ -1,0 +1,68 @@
+@model Pokemon.Models.PokemonResponse
+
+@{
+    ViewData["Title"] = "Pokedex";
+}
+
+<div class="container mt-4">
+    <h3 class="mb-4">@ViewData["Title"]</h3>
+
+    <div> In case if any trainer would require any information about any pokemon, u can help them find it here, in our amazing and simple pokedex! </div>
+
+    <hr/>
+
+    <form method="get" action="@Url.Action("Pokedex")" class="row g-3 mb-4">
+        <input type="hidden" name="page" value="@ViewBag.Page" />
+
+        <div class="col-md-4">
+            <label for="search" class="form-label">Search:</label>
+            <input type="text" class="form-control" id="search" name="search" value="@Context.Request.Query["search"]" />
+        </div>
+
+        <div class="col-md-4">
+            <label for="sortBy" class="form-label">Sort by:</label>
+            <select name="sortBy" id="sortBy" class="form-select">
+                <option value="nameAscending" selected="@(ViewBag.sortBy == "nameAscending" ? "selected" : null)">Name ascending</option>
+                <option value="nameDescending" selected="@(ViewBag.sortBy == "nameDescending" ? "selected" : null)">Name descending</option>
+            </select>
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end">
+            <input type="submit" value="Sort" class="btn btn-dark w-100" />
+        </div>
+    </form>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pokemon in Model.Results)
+            {
+                <tr>
+                    <td><strong>@pokemon.Name</strong></td>
+                    <td><a asp-controller="Home" asp-action="Pokemon" asp-route-name="@pokemon.Name" class="btn btn-sm btn-outline-dark">See this pokemon yourself!</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between mt-4">
+        @if (Model.Previous != null)
+        {
+            <a href="@Url.Action("Pokedex", new { page = ViewBag.Page - 1, sortBy = ViewBag.sortBy, search = ViewBag.search })" class="btn btn-secondary">Previous</a>
+        }
+        else
+        {
+            <span></span>
+        }
+
+        @if (Model.Next != null)
+        {
+            <a href="@Url.Action("Pokedex", new { page = ViewBag.Page + 1, sortBy = ViewBag.sortBy, search = ViewBag.search })" class="btn btn-secondary">Next</a>
+        }
+    </div>
+</div>

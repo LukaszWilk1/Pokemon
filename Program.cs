@@ -3,6 +3,8 @@ using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpClient();
+
 Env.Load();
 
 var host = Environment.GetEnvironmentVariable("DB_HOST");

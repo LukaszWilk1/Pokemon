@@ -2,16 +2,29 @@
     ViewData["Title"] = "Home Page";
 }
 
-<h1>Biggest pokemon tournament in history!!!</h1>
-<p>Biggest pokemon championship is comming very very soon. We are really glad that you decided to help us filling up applications. Trainers are comming from all over the world, there is a lot of going on and every help is invaluable. In a form below you can 
-fill information about trainer who wants to join our tournament. Ask them very carefully about all required informations! Again thank you for your help and good luck!</p>
-<form method="post" asp-controller="Home" asp-action="FormTest">
-    <label for="name">Name:</label>
-    <input id="name" name="name" type="text" maxlength="20" required>
-    <label for="surname">Surname:</label>
-    <input id="surname" name="surname" type="text" maxlength="20" required>
-    <label for="date">Birthday:</label>
-    <input id="birthday" name="birthday" type="date" required  min="@DateTime.Now.ToString("yyyy-MM-dd")">
-    <hr>
-    <input type="submit" value="Submit">
-</form>
+<div class="container mt-5">
+    <h1 class="text-center text-dark mb-4">Biggest pokemon tournament in history!!!</h1>
+    <p class="text-center mb-4">Biggest pokemon championship is coming very very soon. We are really glad that you decided to help us filling up applications. Trainers are coming from all over the world, there is a lot going on and every help is invaluable. In a form below you can fill information about trainer who wants to join our tournament. Ask them very carefully about all required informations! Again thank you for your help and good luck!</p>
+    
+    <form method="post" asp-controller="Home" asp-action="FormTest" class="mx-auto" style="max-width: 600px; border: 2px solid #212529; border-radius: 10px; padding: 20px;">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name:</label>
+            <input id="name" name="name" type="text" class="form-control" maxlength="20" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="surname" class="form-label">Surname:</label>
+            <input id="surname" name="surname" type="text" class="form-control" maxlength="20" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="birthday" class="form-label">Birthday:</label>
+            <input id="birthday" name="birthday" type="date" class="form-control" required max="@DateTime.Now.ToString("yyyy-MM-dd")">
+        </div>
+
+        <div class="text-center mt-4">
+            <input type="submit" value="Submit" class="btn btn-dark btn-lg">
+        </div>
+    </form>
+</div>
+
