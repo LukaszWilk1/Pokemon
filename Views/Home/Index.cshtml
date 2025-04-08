@@ -5,13 +5,13 @@
 <h1>Biggest pokemon tournament in history!!!</h1>
 <p>Biggest pokemon championship is comming very very soon. We are really glad that you decided to help us filling up applications. Trainers are comming from all over the world, there is a lot of going on and every help is invaluable. In a form below you can 
 fill information about trainer who wants to join our tournament. Ask them very carefully about all required informations! Again thank you for your help and good luck!</p>
-<form>
+<form method="post" asp-controller="Home" asp-action="FormTest">
     <label for="name">Name:</label>
-    <input id="name" name="name" type="text" maxlength="20">
+    <input id="name" name="name" type="text" maxlength="20" required>
     <label for="surname">Surname:</label>
-    <input id="surname" name="surname" type="text" maxlength="20">
-    <label for="date">Birthday Date:</label>
-    <input id="birthdaydate" name="birthdaydate" type="date">
+    <input id="surname" name="surname" type="text" maxlength="20" required>
+    <label for="date">Birthday:</label>
+    <input id="birthday" name="birthday" type="date" required>
     <hr>
     <input type="submit" value="Submit">
 </form>
