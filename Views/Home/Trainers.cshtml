@@ -1,0 +1,62 @@
+﻿@model List<Pokemon.Models.Trainer>
+
+@{
+    ViewData["Title"] = "Trainers";
+}
+<h3>@ViewData["Title"]</h3>
+<hr/>
+<form>
+    <table class="table table-responsive table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Surname
+                </th>
+                <th>
+                    Age
+                </th>
+                <th>
+                    Birthday
+                </th>
+                <th>
+                    Legal Age
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model != null && Model.Any())
+            {
+                @foreach (var trainer in Model)
+                {
+                    <tr>
+                        <td>@trainer.Name</td>
+                        <td>@trainer.Surname</td>
+                        <td>@trainer.Age</td>
+                        <td>@trainer.Birthday</td>
+                        <td>@trainer.LegalAge</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a asp-controller="Home" asp-action="Edit" asp-route-id="@trainer.Id" class="btn btn-primary">Edit</a>
+                                <a asp-controller="Home" asp-action="Delete" asp-route-id="@trainer.Id" class="btn btn-danger">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6">
+                        <div>No trainers at this moment</div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>

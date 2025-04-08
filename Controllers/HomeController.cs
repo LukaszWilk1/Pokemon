@@ -20,9 +20,10 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Privacy()
+    public IActionResult Trainers()
     {
-        return View();
+        var trainers = _context.Trainers.ToList();
+        return View(trainers);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -33,24 +34,72 @@ public class HomeController : Controller
 
     public IActionResult FormTest(TrainerData trainerData)
     {
-        Console.WriteLine($"Dane trenera: imie = ${trainerData.Name}, nazwisko = {trainerData.Surname}, data urodzenia = {trainerData.Birthday.ToString("dd.MM.yyyy")}");
-        Console.WriteLine(Int32.Parse((DateTime.Now - trainerData.Birthday).ToString().Split(".")[0])/365);
+        var ageInDays = (DateTime.Now-trainerData.Birthday).Days;
+        var CalculatedAge = ageInDays/365;
 
-        var CalculatedAge = Int32.Parse((DateTime.Now - trainerData.Birthday).ToString().Split(".")[0])/365;
-        
-        Trainer trainer = new Trainer
+        if(CalculatedAge > 0)
         {
-            Name = trainerData.Name,
-            Surname = trainerData.Surname,
-            Age = CalculatedAge,
-            Birthday = DateTime.SpecifyKind(trainerData.Birthday, DateTimeKind.Utc),
-            LegalAge = CalculatedAge > 18 ? true : false
-        };
+            Trainer trainer = new Trainer
+            {
+                Name = trainerData.Name,
+                Surname = trainerData.Surname,
+                Age = CalculatedAge,
+                Birthday = DateTime.SpecifyKind(trainerData.Birthday, DateTimeKind.Utc),
+                LegalAge = CalculatedAge > 18 ? true : false
+            };
         
         _context.Trainers.Add(trainer);
         _context.SaveChanges();
         Console.WriteLine("Dane dodane");
+        }
 
         return RedirectToAction("Index");
+    }
+
+    public IActionResult Edit(int Id)
+    {
+        var trainer = _context.Trainers.SingleOrDefault(x => x.Id == Id);
+
+        if(trainer != null)
+        {
+            return View(trainer);
+        }
+        else
+        {
+            TempData["errorMessage"] = "Trainer not aviable";
+            return RedirectToAction("Trainers");
+        }
+    }
+
+    [HttpPost]
+    public IActionResult Edit(Trainer trainerData)
+    {
+
+        var trainer = new Trainer
+        {
+            Id = trainerData.Id,
+            Name = trainerData.Name,
+            Surname = trainerData.Surname,
+            Age = trainerData.Age,
+            Birthday = DateTime.SpecifyKind(trainerData.Birthday, DateTimeKind.Utc),
+            LegalAge = trainerData.LegalAge
+        };
+
+        _context.Trainers.Update(trainer);
+        _context.SaveChanges();
+        return RedirectToAction("Trainers");
+    }
+    
+    public IActionResult Delete(int Id)
+    {
+        var trainer = _context.Trainers.SingleOrDefault(x => x.Id == Id);
+
+        if(trainer != null)
+        {
+            _context.Trainers.Remove(trainer);
+            _context.SaveChanges();
+        }
+
+        return RedirectToAction("Trainers");
     }
 }

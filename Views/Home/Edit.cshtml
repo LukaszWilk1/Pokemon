@@ -1,0 +1,24 @@
+@model Pokemon.Models.Trainer;
+
+@{
+    ViewData["Title"] = "Trainer Edit";
+}
+
+<h3>@ViewData["Title"]</h3>
+<hr/>
+<form action="Edit" method="post">
+    <div class="mb-3">
+        <input type="hidden" asp-for="Id"/>
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" asp-for="Name" />
+        <label class="form-label">Surname</label>
+        <input type="text" class="form-control" asp-for="Surname" />
+        <label class="form-label">Age</label>
+        <input type="number" class="form-control" asp-for="Age" />
+        <label class="form-label">Birthday</label>
+        <input type="date" class="form-control" asp-for="Birthday" />
+        <label class="form-label">Legal Age</label>
+        <input type="checkbox" asp-for="LegalAge" value="Legal age"/>
+        <input type="submit" value="Submit" class="btn btn-primary"/>
+    </div>
+</form>

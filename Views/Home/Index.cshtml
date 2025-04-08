@@ -11,7 +11,7 @@ fill information about trainer who wants to join our tournament. Ask them very c
     <label for="surname">Surname:</label>
     <input id="surname" name="surname" type="text" maxlength="20" required>
     <label for="date">Birthday:</label>
-    <input id="birthday" name="birthday" type="date" required>
+    <input id="birthday" name="birthday" type="date" required  min="@DateTime.Now.ToString("yyyy-MM-dd")">
     <hr>
     <input type="submit" value="Submit">
 </form>
