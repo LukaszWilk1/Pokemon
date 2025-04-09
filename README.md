@@ -29,18 +29,18 @@ cd Pokemon
 
 And finally to run application
 
-    - For Linux:
-    ```
-    docker-compose up --build
-    ```
-    In case of permision denied error:
-    ```
-    sudo docker-compose up --build
-    ```
-    - For Windows
-    ```
-    docker-compose up --build
-    ```
+- For Linux:
+```
+docker-compose up --build
+```
+In case of permision denied error:
+```
+sudo docker-compose up --build
+```
+- For Windows
+```
+docker-compose up --build
+```
 
 To stop application just press ctrl + c or use command (is u started docker-compose in detached mode):
 
