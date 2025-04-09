@@ -69,4 +69,4 @@ When application is running you can find it under below addres
 ```
 localhost:5001
 ```
-If you are launching it on a virtual machine in place of local host you need to type address of your machine
+If you are launching it on a virtual machine in place of localhost you need to type address of your machine
