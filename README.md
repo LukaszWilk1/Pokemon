@@ -59,7 +59,7 @@ sudo docker-compose up --build
 docker-compose up --build
 ```
 
-To stop application just press ctrl + c or use command (is u started docker-compose in detached mode):
+To stop application just press ctrl + c or use command (if you started docker-compose in detached mode):
 
 ```
 sudo docker-compose down -v
